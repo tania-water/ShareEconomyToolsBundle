@@ -1,0 +1,27 @@
+{
+    "name": "Ibtikar/ShareEconomyToolsBundle",
+    "type": "laravel-library",
+    "description": "Ibtikar share economy tools",
+    "keywords": ["tools"],
+    "homepage": "https://github.com/Ibtikar/ShareEconomyToolsBundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ibtikar"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.9",
+        "composer/installers": "~1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ibtikar\\ShareEconomyToolsBundle\\": ""
+        }
+    },
+    "extra": {
+        "installer-paths": {
+            "src/{$name}": ["Ibtikar/ShareEconomyToolsBundle"]
+        }
+    }
+}
