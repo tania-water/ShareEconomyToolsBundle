@@ -5,6 +5,7 @@ namespace Ibtikar\ShareEconomyToolsBundle\Service;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Ibtikar\ShareEconomyToolsBundle\APIResponse;
 use Ibtikar\ShareEconomyUMSBundle\APIResponse\User as ResponseUser;
 use Ibtikar\ShareEconomyUMSBundle\Entity\User;
 
@@ -38,7 +39,7 @@ class APIOperations
     {
         $errors = array();
         foreach ($errorsObjects as $error) {
-            $errors[$error->getPropertyPath()] = $this->translator->trans($error->getMessage(), array(), 'validators');
+            $errors[$error->getPropertyPath()] = $error->getMessage();
         }
         return $this->getErrorsJsonResponse($errors);
     }
@@ -49,58 +50,44 @@ class APIOperations
      */
     public function getErrorsJsonResponse(array $errors)
     {
-        return new JsonResponse(array(
-            'status' => 'errors',
-            'code' => 422,
-            'errors' => $errors
-        ));
+        $errorResponse = new APIResponse\ValidationErrors();
+        $errorResponse->errors = $errors;
+        return $this->getJsonResponseForObject($errorResponse);
     }
 
     /**
      * @param string $message
      * @return JsonResponse
      */
-    public function getErrorResponse($message = 'We are sorry the server is down.')
+    public function getErrorResponse($message = null)
     {
-        return new JsonResponse(array(
-            'status' => 'error',
-            'code' => 500,
-            'message' => $this->translator->trans($message, array(), 'messages')
-        ));
-    }
-
-    /**
-     * @param string $message
-     * @return JsonResponse
-     */
-    public function getNotFoundErrorResponse($message = 'Not found.')
-    {
-        return new JsonResponse(array(
-            'status' => 'error',
-            'code' => 404,
-            'message' => $this->translator->trans($message, array(), 'messages')
-        ));
-    }
-
-    /**
-     * @param array $data
-     * @return JsonResponse
-     */
-    public function getSuccessResponse(array $data = array('status' => 'success'))
-    {
-        if (!isset($data['code'])) {
-            $data['code'] = 200;
+        $errorResponse = new APIResponse\InternalServerError();
+        if ($message) {
+            $errorResponse->message = $message;
         }
-        return new JsonResponse($data);
+        return $this->getJsonResponseForObject($errorResponse);
+    }
+
+    /**
+     * @param string $message
+     * @return JsonResponse
+     */
+    public function getNotFoundErrorResponse($message = null)
+    {
+        $errorResponse = new APIResponse\NotFound();
+        if ($message) {
+            $errorResponse->message = $message;
+        }
+        return $this->getJsonResponseForObject($errorResponse);
     }
 
     /**
      * @param object $object
      * @return JsonResponse
      */
-    public function getObjectSuccessResponse($object)
+    public function getJsonResponseForObject($object)
     {
-        return $this->getSuccessResponse($this->getObjectDataAsArray($object));
+        return new JsonResponse($this->getObjectDataAsArray($object));
     }
 
     /**
