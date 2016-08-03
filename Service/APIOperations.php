@@ -74,6 +74,15 @@ class APIOperations
     }
 
     /**
+     * @param string $message
+     * @return JsonResponse
+     */
+    public function getInvalidAPIKeyJsonResponse()
+    {
+        return $this->getJsonResponseForObject(new APIResponse\InvalidAPIKey());
+    }
+
+    /**
      * @param object $object
      * @return JsonResponse
      */
