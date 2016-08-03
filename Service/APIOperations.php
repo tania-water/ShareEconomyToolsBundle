@@ -51,7 +51,7 @@ class APIOperations
      * @param string $message
      * @return JsonResponse
      */
-    public function getErrorResponse($message = null)
+    public function getErrorJsonResponse($message = null)
     {
         $errorResponse = new APIResponse\InternalServerError();
         if ($message) {
@@ -64,7 +64,7 @@ class APIOperations
      * @param string $message
      * @return JsonResponse
      */
-    public function getNotFoundErrorResponse($message = null)
+    public function getNotFoundErrorJsonResponse($message = null)
     {
         $errorResponse = new APIResponse\NotFound();
         if ($message) {
