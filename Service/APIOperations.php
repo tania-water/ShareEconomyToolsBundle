@@ -3,11 +3,8 @@
 namespace Ibtikar\ShareEconomyToolsBundle\Service;
 
 use Symfony\Component\Validator\ConstraintViolationList;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Ibtikar\ShareEconomyToolsBundle\APIResponse;
-use Ibtikar\ShareEconomyUMSBundle\APIResponse\User as ResponseUser;
-use Ibtikar\ShareEconomyUMSBundle\Entity\User;
 
 /**
  * @author Mahmoud Mostafa <mahmoud.mostafa@ibtikar.net.sa>
@@ -15,19 +12,14 @@ use Ibtikar\ShareEconomyUMSBundle\Entity\User;
 class APIOperations
 {
 
-    /** @var $tranlator TranslatorInterface */
-    private $translator;
-
     /** @var $assetsDomain string */
     private $assetsDomain;
 
     /**
-     * @param TranslatorInterface $translator
      * @param string $assetsDomain
      */
-    public function __construct(TranslatorInterface $translator, $assetsDomain)
+    public function __construct($assetsDomain)
     {
-        $this->translator = $translator;
         $this->assetsDomain = "http://$assetsDomain";
     }
 
@@ -97,24 +89,5 @@ class APIOperations
     public function getObjectDataAsArray($object)
     {
         return json_decode(json_encode($object), true);
-    }
-
-    /**
-     * @param User $user
-     * @return array
-     */
-    public function getUserData(User $user)
-    {
-        $responseUser = new ResponseUser();
-        $responseUser->id = $user->getId();
-        $responseUser->fullName = $user->getFullName();
-        $responseUser->email = $user->getEmail();
-        $responseUser->phone = $user->getPhone();
-        $responseUser->emailVerified = $user->getEmailVerified();
-        $responseUser->isPhoneVerified = $user->getIsPhoneVerified();
-        if ($user->getImage()) {
-            $responseUser->image = $this->assetsDomain . '/' . $user->getWebPath();
-        }
-        return $this->getObjectDataAsArray($responseUser);
     }
 }

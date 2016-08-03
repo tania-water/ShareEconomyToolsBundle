@@ -2,4 +2,4 @@ services:
 
     api_operations:
         class: Ibtikar\ShareEconomyToolsBundle\Service\APIOperations
-        arguments: [ '@translator', '%assets_domain%' ]
+        arguments: [ '%assets_domain%' ]
