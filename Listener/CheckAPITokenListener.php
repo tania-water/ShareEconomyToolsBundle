@@ -34,7 +34,7 @@ class CheckAPITokenListener
     {
         $request = $event->getRequest();
         if (strpos($request->getRequestUri(), '/api/doc') === false && strpos($request->getRequestUri(), '/api') !== false) {
-            $apiKeyIndex = array_search($request->headers->get('X-Api-Key'), $this->apiKeys);
+            $apiKeyIndex = array_search($request->headers->get('X-Api-Key'), $this->apiKeys, true);
             if ($apiKeyIndex === false) {
                 $event->setResponse($this->apiOperations->getInvalidAPIKeyJsonResponse());
                 return;
