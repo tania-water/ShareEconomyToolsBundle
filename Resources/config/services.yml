@@ -3,3 +3,14 @@ services:
     api_operations:
         class: Ibtikar\ShareEconomyToolsBundle\Service\APIOperations
         arguments: [ '%assets_domain%' ]
+
+    request.listener.check_api_token:
+        class: Ibtikar\ShareEconomyToolsBundle\Listener\CheckAPITokenListener
+        arguments: [ '@api_operations', '%android_api_key%', '%ios_api_key%' ]
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onRequest, priority: 255 }
+
+    request.listener.language:
+        class: Ibtikar\ShareEconomyToolsBundle\Listener\LanguageListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onRequest, priority: 254 }
