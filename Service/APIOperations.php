@@ -13,7 +13,7 @@ class APIOperations
 {
 
     /** @var $assetsDomain string */
-    private $assetsDomain;
+    protected $assetsDomain;
 
     /**
      * @param string $assetsDomain
