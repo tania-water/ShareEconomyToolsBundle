@@ -51,6 +51,17 @@ class APIOperations
      * @param string $message
      * @return JsonResponse
      */
+    public function getSingleErrorJsonResponse($message)
+    {
+        $errorResponse = new APIResponse\Fail();
+        $errorResponse->message = $message;
+        return $this->getJsonResponseForObject($errorResponse);
+    }
+
+    /**
+     * @param string $message
+     * @return JsonResponse
+     */
     public function getErrorJsonResponse($message = null)
     {
         $errorResponse = new APIResponse\InternalServerError();
@@ -80,6 +91,14 @@ class APIOperations
     public function getInvalidAPIKeyJsonResponse()
     {
         return $this->getJsonResponseForObject(new APIResponse\InvalidAPIKey());
+    }
+
+    /**
+     * @return JsonResponse
+     */
+    public function getSuccessJsonResponse()
+    {
+        return $this->getJsonResponseForObject(new APIResponse\Success());
     }
 
     /**
