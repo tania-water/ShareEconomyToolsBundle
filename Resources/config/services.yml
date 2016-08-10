@@ -12,5 +12,6 @@ services:
 
     request.listener.language:
         class: Ibtikar\ShareEconomyToolsBundle\Listener\LanguageListener
+        arguments: [ %accepted_locales% ]
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onRequest, priority: 254 }

@@ -9,16 +9,22 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
  */
 class LanguageListener
 {
+    protected $acceptedLocales;
+
+    public function __construct($acceptedLocales)
+    {
+        $this->acceptedLocales = $acceptedLocales;
+    }
 
     /**
      * @param GetResponseEvent $event
      */
     public function onRequest(GetResponseEvent $event)
     {
-        $supportedLanguages = array('ar', 'en');
-        $request = $event->getRequest();
-        $requestedLocale = $request->get('lang');
-        if ($requestedLocale && in_array($requestedLocale, $supportedLanguages)) {
+        $request         = $event->getRequest();
+        $requestedLocale = $request->headers->get('lang');
+
+        if ($requestedLocale && in_array($requestedLocale, $this->acceptedLocales)) {
             $request->setLocale($requestedLocale);
         }
     }
