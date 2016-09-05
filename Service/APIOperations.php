@@ -2,8 +2,11 @@
 
 namespace Ibtikar\ShareEconomyToolsBundle\Service;
 
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Ibtikar\ShareEconomyToolsBundle\APIResponse;
 
 /**
@@ -15,12 +18,52 @@ class APIOperations
     /** @var $assetsDomain string */
     protected $assetsDomain;
 
+    /** @var ValidatorInterface $validator */
+    protected $validator;
+
     /**
      * @param string $assetsDomain
+     * @param ValidatorInterface $validator
      */
-    public function __construct($assetsDomain)
+    public function __construct($assetsDomain, ValidatorInterface $validator = null)
     {
         $this->assetsDomain = "http://$assetsDomain";
+        $this->validator = $validator;
+    }
+
+    /**
+     * set the object public variables from the request
+     * @param object &$object
+     * @param Request $request
+     */
+    public function bindObjectDataFromRequst(&$object, Request $request)
+    {
+        $accessor = PropertyAccess::createPropertyAccessor();
+        $objectVars = get_object_vars($object);
+        foreach ($objectVars as $objectVarName => $value) {
+            $varValue = $request->get($objectVarName, $value);
+            if (strlen($varValue) > 0 && is_numeric($varValue)) {
+                // PHP will internally convert the string to it is correct type for example float or integer to pass the validator type check
+                $varValue = $varValue + 0;
+            }
+            $accessor->setValue($object, $objectVarName, $varValue);
+        }
+    }
+
+    /**
+     * set the object public variables from the request and then validate the object
+     * @param object &$object
+     * @param Request $request
+     * @param array $validationGroups
+     * @return JsonResponse|null errors response or null if no errors found
+     */
+    public function bindAndValidateObjectDataFromRequst(&$object, Request $request, array $validationGroups = array('Default'))
+    {
+        $this->bindObjectDataFromRequst($object, $request);
+        $errorsObjects = $this->validator->validate($object, null, $validationGroups);
+        if (count($errorsObjects) > 0) {
+            return $this->getValidationErrorsJsonResponse($errorsObjects);
+        }
     }
 
     /**
