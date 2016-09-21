@@ -32,6 +32,25 @@ class APIOperations
     }
 
     /**
+     * set the object public variables from anotherObject
+     * @param object &$destinationObject
+     * @param object $sourceObject
+     */
+    public function bindObjectDataFromObject(&$destinationObject, $sourceObject)
+    {
+        $accessor = PropertyAccess::createPropertyAccessor();
+        $objectVars = get_object_vars($destinationObject);
+        foreach ($objectVars as $objectVarName => $value) {
+            $varValue = $accessor->getValue($sourceObject, $objectVarName);
+            if (strlen($varValue) > 0 && is_numeric($varValue)) {
+                // PHP will internally convert the string to it is correct type for example float or integer to pass the validator type check
+                $varValue = $varValue + 0;
+            }
+            $accessor->setValue($destinationObject, $objectVarName, $varValue);
+        }
+    }
+
+    /**
      * set the object public variables from the request
      * @param object &$object
      * @param Request $request
