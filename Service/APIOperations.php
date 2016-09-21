@@ -15,19 +15,14 @@ use Ibtikar\ShareEconomyToolsBundle\APIResponse;
 class APIOperations
 {
 
-    /** @var $assetsDomain string */
-    protected $assetsDomain;
-
     /** @var ValidatorInterface $validator */
     protected $validator;
 
     /**
-     * @param string $assetsDomain
      * @param ValidatorInterface $validator
      */
-    public function __construct($assetsDomain, ValidatorInterface $validator = null)
+    public function __construct(ValidatorInterface $validator = null)
     {
-        $this->assetsDomain = "http://$assetsDomain";
         $this->validator = $validator;
     }
 
