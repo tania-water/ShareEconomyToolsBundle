@@ -94,6 +94,27 @@ class APIOperations
     }
 
     /**
+     * validate object and return error messages array
+     *
+     * @param type $object
+     * @param type $groups
+     * @return array
+     */
+    public function validateObject($object, $groups = null)
+    {
+        $validationMessages = [];
+        $errors             = $this->validator->validate($object, null, $groups);
+
+        if (count($errors) > 0) {
+            foreach ($errors as $error) {
+                $validationMessages[$error->getPropertyPath()] = $error->getMessage();
+            }
+        }
+
+        return $validationMessages;
+    }
+
+    /**
      * @param array $errors array of "field name" => "error"
      * @return JsonResponse
      */
