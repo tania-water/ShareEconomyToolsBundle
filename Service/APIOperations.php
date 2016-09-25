@@ -36,12 +36,14 @@ class APIOperations
         $accessor = PropertyAccess::createPropertyAccessor();
         $objectVars = get_object_vars($destinationObject);
         foreach ($objectVars as $objectVarName => $value) {
-            $varValue = $accessor->getValue($sourceObject, $objectVarName);
-            if (strlen($varValue) > 0 && is_numeric($varValue)) {
-                // PHP will internally convert the string to it is correct type for example float or integer to pass the validator type check
-                $varValue = $varValue + 0;
+            if ($accessor->isReadable($sourceObject, $objectVarName)) {
+                $varValue = $accessor->getValue($sourceObject, $objectVarName);
+                if (strlen($varValue) > 0 && is_numeric($varValue)) {
+                    // PHP will internally convert the string to it is correct type for example float or integer to pass the validator type check
+                    $varValue = $varValue + 0;
+                }
+                $accessor->setValue($destinationObject, $objectVarName, $varValue);
             }
-            $accessor->setValue($destinationObject, $objectVarName, $varValue);
         }
     }
 
