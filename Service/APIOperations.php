@@ -38,9 +38,12 @@ class APIOperations
         foreach ($objectVars as $objectVarName => $value) {
             if ($accessor->isReadable($sourceObject, $objectVarName)) {
                 $varValue = $accessor->getValue($sourceObject, $objectVarName);
-                if (strlen($varValue) > 0 && is_numeric($varValue)) {
+                if (is_string($varValue) && strlen($varValue) > 0 && is_numeric($varValue)) {
                     // PHP will internally convert the string to it is correct type for example float or integer to pass the validator type check
                     $varValue = $varValue + 0;
+                }
+                if ($varValue instanceof \DateTime) {
+                    $varValue = $varValue->format('Y-m-d H:i:s');
                 }
                 $accessor->setValue($destinationObject, $objectVarName, $varValue);
             }
@@ -58,7 +61,7 @@ class APIOperations
         $objectVars = get_object_vars($object);
         foreach ($objectVars as $objectVarName => $value) {
             $varValue = $request->get($objectVarName, $value);
-            if (strlen($varValue) > 0 && is_numeric($varValue)) {
+            if (is_string($varValue) && strlen($varValue) > 0 && is_numeric($varValue)) {
                 // PHP will internally convert the string to it is correct type for example float or integer to pass the validator type check
                 $varValue = $varValue + 0;
             }
