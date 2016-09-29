@@ -44,6 +44,8 @@ class APIOperations
                 }
                 if ($varValue instanceof \DateTime) {
                     $varValue = $varValue->format('Y-m-d H:i:s');
+                } elseif (is_object($varValue)) {
+                    continue;
                 }
                 $accessor->setValue($destinationObject, $objectVarName, $varValue);
             }
