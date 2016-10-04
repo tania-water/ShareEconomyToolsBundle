@@ -4,18 +4,8 @@ namespace Ibtikar\ShareEconomyToolsBundle\APIResponse;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class InvalidAPIKey
+class InvalidAPIKey extends AccessDenied
 {
-
-    /**
-     * @Assert\Type(type="boolean")
-     */
-    public $status = false;
-
-    /**
-     * @Assert\Type(type="integer")
-     */
-    public $code = 403;
 
     /**
      * @Assert\Type(type="string")

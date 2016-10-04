@@ -4,7 +4,7 @@ namespace Ibtikar\ShareEconomyToolsBundle\APIResponse;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class InternalServerError
+class InternalServerError extends MainResponse
 {
 
     /**

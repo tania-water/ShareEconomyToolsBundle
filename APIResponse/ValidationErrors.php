@@ -4,7 +4,7 @@ namespace Ibtikar\ShareEconomyToolsBundle\APIResponse;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class ValidationErrors
+class ValidationErrors extends MainResponse
 {
 
     /**

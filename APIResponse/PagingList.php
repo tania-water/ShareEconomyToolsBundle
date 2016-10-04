@@ -4,22 +4,24 @@ namespace Ibtikar\ShareEconomyToolsBundle\APIResponse;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class Fail extends MainResponse
+/**
+ * @author Karim Shendy <kareem.elshendy@ibtikar.net.sa>
+ */
+class PagingList extends MainResponse
 {
+    /**
+     * @Assert\NotBlank
+     */
+    public $items = [];
 
     /**
      * @Assert\NotBlank
      */
-    public $status = false;
+    public $currentPage;
 
     /**
      * @Assert\NotBlank
      */
-    public $code = 422;
-
-    /**
-     * @Assert\NotBlank
-     */
-    public $message = '';
+    public $hasNextPage;
 
 }
