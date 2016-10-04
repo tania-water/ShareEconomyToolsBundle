@@ -30,11 +30,12 @@ class APIOperations
      * set the object public variables from anotherObject
      * @param object &$destinationObject
      * @param object $sourceObject
+     * @param array $hiddenVariables
      */
-    public function bindObjectDataFromObject(&$destinationObject, $sourceObject)
+    public function bindObjectDataFromObject(&$destinationObject, $sourceObject, array $hiddenVariables = array())
     {
         $accessor = PropertyAccess::createPropertyAccessor();
-        $objectVars = get_object_vars($destinationObject);
+        $objectVars = array_merge(get_object_vars($destinationObject), $hiddenVariables);
         foreach ($objectVars as $objectVarName => $value) {
             if ($accessor->isReadable($sourceObject, $objectVarName)) {
                 $varValue = $accessor->getValue($sourceObject, $objectVarName);
