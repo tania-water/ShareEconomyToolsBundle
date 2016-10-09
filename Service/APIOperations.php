@@ -193,7 +193,7 @@ class APIOperations
      */
     public function getJsonResponseForObject($object)
     {
-        return new JsonResponse($this->getObjectDataAsArray($object));
+        return new JsonResponse($object);
     }
 
     /**
