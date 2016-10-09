@@ -39,10 +39,6 @@ class APIOperations
         foreach ($objectVars as $objectVarName => $value) {
             if ($accessor->isReadable($sourceObject, $objectVarName)) {
                 $varValue = $accessor->getValue($sourceObject, $objectVarName);
-                if (is_string($varValue) && strlen($varValue) > 0 && is_numeric($varValue)) {
-                    // PHP will internally convert the string to it is correct type for example float or integer to pass the validator type check
-                    $varValue = $varValue + 0;
-                }
                 if ($varValue instanceof \DateTime) {
                     $varValue = $varValue->format('Y-m-d H:i:s');
                 } elseif (is_object($varValue)) {
