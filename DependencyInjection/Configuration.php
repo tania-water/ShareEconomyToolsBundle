@@ -24,6 +24,14 @@ class Configuration implements ConfigurationInterface
         // configure your bundle. See the documentation linked above for
         // more information on that topic.
 
+        $rootNode
+                ->children()
+                ->scalarNode('firebase_database_secret')
+                ->end()
+                ->scalarNode('firebase_url_base')
+                ->end()
+                ->end();
         return $treeBuilder;
     }
+
 }
