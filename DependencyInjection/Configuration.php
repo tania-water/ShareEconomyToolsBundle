@@ -30,6 +30,10 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->scalarNode('firebase_url_base')
                 ->end()
+                ->scalarNode('google_destance_matrix_url_base')
+                ->end()
+                ->scalarNode('google_destance_matrix_key')
+                ->end()
                 ->end();
         return $treeBuilder;
     }
