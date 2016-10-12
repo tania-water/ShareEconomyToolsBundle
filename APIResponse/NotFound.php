@@ -20,6 +20,13 @@ class NotFound extends MainResponse
     /**
      * @Assert\Type(type="string")
      */
-    public $message = 'Not found.';
+    public $message;
 
+    /**
+     * @param string $message
+     */
+    public function __construct($message = 'Not found.')
+    {
+        $this->message = $message;
+    }
 }
