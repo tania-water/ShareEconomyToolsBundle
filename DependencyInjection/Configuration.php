@@ -34,6 +34,10 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->scalarNode('google_distance_matrix_key')
                 ->end()
+                ->scalarNode('google_directions_url_base')
+                ->end()
+                ->scalarNode('google_directions_key')
+                ->end()
                 ->end();
         return $treeBuilder;
     }
