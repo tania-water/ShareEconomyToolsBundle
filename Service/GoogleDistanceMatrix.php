@@ -6,24 +6,25 @@ namespace Ibtikar\ShareEconomyToolsBundle\Service;
 
 /**
  * @author Micheal Mouner <micheal.mouner@ibtikar.net.sa>
- * class to handle firebase requests 
+ * class to handle firebase requests
  * https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=Washington,DC&destinations=New+York+City,NY&key=AIzaSyBApKO8bWPA3XdN3ZsKqM2z7p5caTQZD9c
 
  */
-class GoogleDestanceMatrix
+class GoogleDistanceMatrix
 {
 
     protected $authToken;
     protected $baseUrl;
+    protected $units = "metric";
 
     public function __construct($baseUrl, $authToken)
     {
         if (!$authToken) {
-            throw new \Exception('You should set google_destance_matrix_url_base in config.yml');
+            throw new \Exception('You should set google_distance_matrix_url_base in config.yml');
         }
 
         if (!$baseUrl) {
-            throw new \Exception('You should set google_destance_matrix_key in config.yml');
+            throw new \Exception('You should set google_distance_matrix_key in config.yml');
         }
 
         $this->authToken = $authToken;
@@ -41,7 +42,7 @@ class GoogleDestanceMatrix
             'key' => $this->authToken,
             'origins' => "$latSource,$longSource",
             'destinations' => "$latDestination,$longDestination",
-            'units' => 'imperial'
+            'units' => $this->units
         ];
         $url = $this->baseUrl;
         return self::CallAPI('GET', $url, $params);
@@ -51,7 +52,7 @@ class GoogleDestanceMatrix
      * Curl PUT-POST-GET-DELETE
      * @param String $method
      * @param String $url
-     * @param Array $data // Data: array("param" => "value") ==> index.php?param=value   
+     * @param Array $data // Data: array("param" => "value") ==> index.php?param=value
      * @return Json
      */
     protected function CallAPI($method, $url, $data = false)
@@ -86,7 +87,7 @@ class GoogleDestanceMatrix
             curl_setopt($curl, CURLOPT_POSTFIELDS, $data_string);
         }
 
-        echo $url;
+        $url;
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 

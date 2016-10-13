@@ -7,11 +7,11 @@ services:
     firebase:
         class: Ibtikar\ShareEconomyToolsBundle\Service\FireBaseHandler
         arguments: [ '%firebase_url_base%','%firebase_database_secret%' ]
-        
+
     google.distancematrix:
-        class: Ibtikar\ShareEconomyToolsBundle\Service\GoogleDestanceMatrix
-        arguments: [ '%google_destance_matrix_url_base%','%google_destance_matrix_key%' ]
-            
+        class: Ibtikar\ShareEconomyToolsBundle\Service\GoogleDistanceMatrix
+        arguments: [ '%google_distance_matrix_url_base%','%google_distance_matrix_key%' ]
+
     request.listener.check_api_token:
         class: Ibtikar\ShareEconomyToolsBundle\Listener\CheckAPITokenListener
         arguments: [ '@api_operations', '%android_api_key%', '%ios_api_key%' ]
