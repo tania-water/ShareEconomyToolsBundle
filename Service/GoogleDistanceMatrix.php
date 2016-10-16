@@ -87,7 +87,6 @@ class GoogleDistanceMatrix
             curl_setopt($curl, CURLOPT_POSTFIELDS, $data_string);
         }
 
-        $url;
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 
