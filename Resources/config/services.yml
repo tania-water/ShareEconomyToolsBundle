@@ -6,15 +6,15 @@ services:
 
     firebase:
         class: Ibtikar\ShareEconomyToolsBundle\Service\FireBaseHandler
-        arguments: [ '%firebase_url_base%','%firebase_database_secret%' ]
+        arguments: [ '%ibtikar_share_economy_tools.firebase_url_base%', '%ibtikar_share_economy_tools.firebase_database_secret%' ]
 
     google.distancematrix:
         class: Ibtikar\ShareEconomyToolsBundle\Service\GoogleDistanceMatrix
-        arguments: [ '%google_distance_matrix_url_base%','%google_distance_matrix_key%' ]
+        arguments: [ '%ibtikar_share_economy_tools.google_distance_matrix_url_base%','%ibtikar_share_economy_tools.google_distance_matrix_key%' ]
 
     google.directions:
         class: Ibtikar\ShareEconomyToolsBundle\Service\GoogleDirections
-        arguments: [ '%google_directions_url_base%','%google_directions_key%' ]
+        arguments: [ '%ibtikar_share_economy_tools.google_directions_url_base%','%ibtikar_share_economy_tools.google_directions_key%' ]
 
     request.listener.check_api_token:
         class: Ibtikar\ShareEconomyToolsBundle\Listener\CheckAPITokenListener

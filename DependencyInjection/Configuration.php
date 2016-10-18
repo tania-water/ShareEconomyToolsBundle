@@ -25,20 +25,26 @@ class Configuration implements ConfigurationInterface
         // more information on that topic.
 
         $rootNode
-                ->children()
+            ->children()
                 ->scalarNode('firebase_database_secret')
+                    ->defaultNull()
                 ->end()
                 ->scalarNode('firebase_url_base')
+                    ->defaultNull()
                 ->end()
                 ->scalarNode('google_distance_matrix_url_base')
+                    ->defaultNull()
                 ->end()
                 ->scalarNode('google_distance_matrix_key')
+                    ->defaultNull()
                 ->end()
                 ->scalarNode('google_directions_url_base')
+                    ->defaultNull()
                 ->end()
                 ->scalarNode('google_directions_key')
+                    ->defaultNull()
                 ->end()
-                ->end();
+            ->end();
         return $treeBuilder;
     }
 
