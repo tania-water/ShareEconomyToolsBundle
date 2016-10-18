@@ -7,8 +7,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Success extends MainResponse
 {
     /**
-     * @Assert\Type(type="string")
+     * @param string $message
      */
-    public $message = 'Success.';
+    public function __construct($message = 'Success.')
+    {
+        $this->message = $message;
+    }
 
 }
