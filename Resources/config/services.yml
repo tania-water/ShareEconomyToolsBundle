@@ -15,3 +15,9 @@ services:
         arguments: [ "%accepted_locales%" ]
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onRequest, priority: 254 }
+
+    app.exception_listener:
+        class: Ibtikar\ShareEconomyToolsBundle\Listener\ExceptionListener
+        arguments: ["%kernel.environment%"]
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }
