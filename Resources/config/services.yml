@@ -16,6 +16,11 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onRequest, priority: 254 }
 
+    content_length_listener:
+        class: Ibtikar\ShareEconomyToolsBundle\Listener\ContentLengthListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.response, method: onResponse, priority: -255 }
+
     app.exception_listener:
         class: Ibtikar\ShareEconomyToolsBundle\Listener\ExceptionListener
         arguments: ["%kernel.environment%"]
