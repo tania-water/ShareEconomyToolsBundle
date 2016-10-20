@@ -2,13 +2,15 @@
 
 namespace Ibtikar\ShareEconomyToolsBundle\Listener;
 
+use Ibtikar\ShareEconomyToolsBundle\APIResponse as ToolsBundleAPIResponses;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ExceptionListener
 {
-    protected $env;
+
+    private $env;
 
     public function __construct($env)
     {
@@ -17,16 +19,14 @@ class ExceptionListener
 
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
-        switch ($this->env) {
-            case "dev":
-                $response = $event->getResponse();
-                break;
-            default:
-                $error500 = new \Ibtikar\ShareEconomyToolsBundle\APIResponse\InternalServerError();
-                $response = new \Symfony\Component\HttpFoundation\JsonResponse($error500);
-                break;
+        $request = $event->getRequest();
+        if (strpos($request->getRequestUri(), '/api/doc') === false && strpos($request->getRequestUri(), '/api') !== false) {
+            if ($this->env !== 'dev') {
+                $event->setResponse(new JsonResponse(new ToolsBundleAPIResponses\InternalServerError()));
+                if ($event->getException() instanceof NotFoundHttpException) {
+                    $event->setResponse(new JsonResponse(new ToolsBundleAPIResponses\NotFound()));
+                }
+            }
         }
-        $event->setResponse($response);
     }
-
 }
