@@ -14,7 +14,7 @@ trait TrackableTrait
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="created_at", type="datetime")
      */
-    private $createdAt;
+    protected $createdAt;
 
     /**
      * @var \DateTime $updatedAt
@@ -22,7 +22,7 @@ trait TrackableTrait
      * @Gedmo\Timestampable(on="update")
      * @ORM\Column(name="updated_at", type="datetime")
      */
-    private $updatedAt;
+    protected $updatedAt;
 
     /**
      * @var int
@@ -30,7 +30,7 @@ trait TrackableTrait
      * @ORM\Version
      * @ORM\Column(type="integer")
      */
-    private $version = 1;
+    protected $version = 1;
 
     /**
      * Set createdAt
