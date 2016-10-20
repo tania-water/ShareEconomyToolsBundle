@@ -9,20 +9,20 @@ trait TrackableTrait
 {
 
     /**
-     * @var \DateTime $created
+     * @var \DateTime $createdAt
      *
      * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(name="created_at", type="datetime")
      */
-    private $created;
+    private $createdAt;
 
     /**
-     * @var \DateTime $updated
+     * @var \DateTime $updatedAt
      *
      * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(name="updated_at", type="datetime")
      */
-    private $updated;
+    private $updatedAt;
 
     /**
      * @var int
@@ -33,51 +33,51 @@ trait TrackableTrait
     private $version = 1;
 
     /**
-     * Set created
+     * Set createdAt
      *
-     * @param \DateTime $created
+     * @param \DateTime $createdAt
      *
      * @return this
      */
-    public function setCreated($created)
+    public function setCreatedAt($createdAt)
     {
-        $this->created = $created;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
     /**
-     * Get created
+     * Get createdAt
      *
      * @return \DateTime
      */
-    public function getCreated()
+    public function getCreatedAt()
     {
-        return $this->created;
+        return $this->createdAt;
     }
 
     /**
-     * Set updated
+     * Set updatedAt
      *
-     * @param \DateTime $updated
+     * @param \DateTime $updatedAt
      *
      * @return this
      */
-    public function setUpdated($updated)
+    public function setUpdatedAt($updatedAt)
     {
-        $this->updated = $updated;
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
 
     /**
-     * Get updated
+     * Get updatedAt
      *
      * @return \DateTime
      */
-    public function getUpdated()
+    public function getUpdatedAt()
     {
-        return $this->updated;
+        return $this->updatedAt;
     }
 
     /**
