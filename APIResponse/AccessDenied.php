@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class AccessDenied extends MainResponse
 {
+
     /**
      * @Assert\Type("integer")
      */
@@ -22,8 +23,10 @@ class AccessDenied extends MainResponse
     public $status = false;
 
     /**
-     * @Assert\Type("string")
+     * @param string $message
      */
-    public $message = 'Access denied';
-
+    public function __construct($message = 'Access denied.')
+    {
+        $this->message = $message;
+    }
 }
