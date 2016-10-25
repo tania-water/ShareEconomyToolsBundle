@@ -144,7 +144,7 @@ class APIOperations
     }
 
     /**
-     * @param string $message
+     * @param string|null $message
      * @return JsonResponse
      */
     public function getErrorJsonResponse($message = null)
@@ -157,7 +157,7 @@ class APIOperations
     }
 
     /**
-     * @param string $message
+     * @param string|null $message
      * @return JsonResponse
      */
     public function getNotFoundErrorJsonResponse($message = null)
@@ -170,7 +170,6 @@ class APIOperations
     }
 
     /**
-     * @param string $message
      * @return JsonResponse
      */
     public function getInvalidAPIKeyJsonResponse()
@@ -179,11 +178,16 @@ class APIOperations
     }
 
     /**
+     * @param string|null $message
      * @return JsonResponse
      */
-    public function getSuccessJsonResponse()
+    public function getSuccessJsonResponse($message = null)
     {
-        return $this->getJsonResponseForObject(new APIResponse\Success());
+        $successResponse = new APIResponse\Success();
+        if ($message) {
+            $successResponse->message = $message;
+        }
+        return $this->getJsonResponseForObject($successResponse);
     }
 
     /**
