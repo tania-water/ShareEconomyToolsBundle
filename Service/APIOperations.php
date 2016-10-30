@@ -8,6 +8,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Ibtikar\ShareEconomyToolsBundle\APIResponse;
+use Doctrine\ORM\Proxy\Proxy;
 
 /**
  * @author Mahmoud Mostafa <mahmoud.mostafa@ibtikar.net.sa>
@@ -35,6 +36,12 @@ class APIOperations
      */
     public function bindObjectDataFromObject(&$destinationObject, $sourceObject, $readVariablesFromSourceObject = false, array $hiddenVariables = array())
     {
+        if ($destinationObject instanceof Proxy) {
+            $destinationObject->__load();
+        }
+        if ($sourceObject instanceof Proxy) {
+            $sourceObject->__load();
+        }
         $accessor = PropertyAccess::createPropertyAccessor();
         $objectVars = array_merge(get_object_vars($readVariablesFromSourceObject ? $sourceObject : $destinationObject), $hiddenVariables);
         foreach ($objectVars as $objectVarName => $value) {
@@ -59,6 +66,9 @@ class APIOperations
      */
     public function bindObjectDataFromRequst(&$object, Request $request)
     {
+        if ($object instanceof Proxy) {
+            $object->__load();
+        }
         $accessor = PropertyAccess::createPropertyAccessor();
         $objectVars = get_object_vars($object);
         foreach ($objectVars as $objectVarName => $value) {
