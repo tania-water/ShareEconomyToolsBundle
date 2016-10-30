@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+# composer install
+if ! type "composer" > /dev/null 2>&1; then
+    COMPOSER_NAME=./composer.phar
+    EXPECTED_SIGNATURE=$(wget https://composer.github.io/installer.sig -O - -q)
+    php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+    ACTUAL_SIGNATURE=$(php -r "echo hash_file('SHA384', 'composer-setup.php');")
+    if [ "$EXPECTED_SIGNATURE" = "$ACTUAL_SIGNATURE" ]
+    then
+        php composer-setup.php --quiet
+        RESULT=$?
+        rm composer-setup.php
+    else
+        >&2 echo 'ERROR: Invalid installer signature'
+        rm composer-setup.php
+        exit 1
+    fi
+else
+    COMPOSER_NAME=composer
+fi
+
+# general
+SYMFONY_ENV=prod $COMPOSER_NAME install --no-interaction
+bin/console doctrine:migrations:migrate --no-interaction --query-time
+bin/console assets:install web
+
+# prod environment
+bin/console cache:warmup -e prod
+SYMFONY_ENV=prod $COMPOSER_NAME dump-autoload --optimize --no-dev --no-interaction
