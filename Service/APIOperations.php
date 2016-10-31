@@ -194,6 +194,19 @@ class APIOperations
     }
 
     /**
+     * @param string|null $message
+     * @return JsonResponse
+     */
+    public function getAccessDeniedJsonResponse($message = null)
+    {
+        $accessDeniedResponse = new APIResponse\AccessDenied();
+        if ($message) {
+            $accessDeniedResponse->message = $message;
+        }
+        return $this->getJsonResponseForObject($accessDeniedResponse);
+    }
+
+    /**
      * @param object $object
      * @return JsonResponse
      */
