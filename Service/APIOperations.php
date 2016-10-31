@@ -28,9 +28,9 @@ class APIOperations
 
     /**
      * set the object public variables from anotherObject if you pass a doctrine
-     * class that extends another class you must implement __get function or you
-     * will face Undefined property notice if you pass a non existing parameter
-     * to the bind
+     * class that extends another class you must implement __get function and
+     * throw exception in it or you will face Undefined property notice if you
+     * pass a non existing parameter to the bind
      * @param object &$destinationObject
      * @param object $sourceObject
      * @param boolean $readVariablesFromSourceObject
@@ -41,7 +41,13 @@ class APIOperations
         $accessor = PropertyAccess::createPropertyAccessor();
         $objectVars = array_merge(get_object_vars($readVariablesFromSourceObject ? $sourceObject : $destinationObject), $hiddenVariables);
         foreach ($objectVars as $objectVarName => $value) {
-            if ($accessor->isReadable($sourceObject, $objectVarName)) {
+            $variableReadable = false;
+            try {
+                $variableReadable = $accessor->isReadable($sourceObject, $objectVarName);
+            } catch (\Exception $e) {
+
+            }
+            if ($variableReadable) {
                 $varValue = $accessor->getValue($sourceObject, $objectVarName);
                 if ($varValue instanceof \DateTime) {
                     $varValue = $varValue->format('Y-m-d H:i:s');
