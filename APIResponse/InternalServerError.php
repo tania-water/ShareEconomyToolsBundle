@@ -18,8 +18,10 @@ class InternalServerError extends MainResponse
     public $code = 500;
 
     /**
-     * @Assert\Type(type="string")
+     * @param string $message
      */
-    public $message = 'Something is not right, Please contact the development team.';
-
+    public function __construct($message = 'Something is not right, Please contact the development team.')
+    {
+        $this->message = $message;
+    }
 }

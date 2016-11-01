@@ -18,8 +18,10 @@ class NotFound extends MainResponse
     public $code = 404;
 
     /**
-     * @Assert\Type(type="string")
+     * @param string $message
      */
-    public $message = 'Not found.';
-
+    public function __construct($message = 'Not found.')
+    {
+        $this->message = $message;
+    }
 }

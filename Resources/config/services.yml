@@ -15,3 +15,20 @@ services:
         arguments: [ "%accepted_locales%" ]
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onRequest, priority: 254 }
+
+    console_subscriber_single_run_command:
+        class: Ibtikar\ShareEconomyToolsBundle\Listener\SingleRunCommandConsoleSubscriber
+        tags:
+            -  { name: kernel.event_subscriber }
+        arguments: [%kernel.root_dir%]
+
+    content_length_listener:
+        class: Ibtikar\ShareEconomyToolsBundle\Listener\ContentLengthListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.response, method: onResponse, priority: -255 }
+
+    app.exception_listener:
+        class: Ibtikar\ShareEconomyToolsBundle\Listener\ExceptionListener
+        arguments: ["%kernel.environment%"]
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }

@@ -27,28 +27,36 @@ class APIOperations
     }
 
     /**
-     * set the object public variables from anotherObject
+     * set the object public variables from anotherObject if you pass a doctrine
+     * class that extends another class you must implement __get function and
+     * throw exception in it or you will face Undefined property notice if you
+     * pass a non existing parameter to the bind
      * @param object &$destinationObject
      * @param object $sourceObject
+     * @param boolean $readVariablesFromSourceObject
      * @param array $hiddenVariables
      */
-    public function bindObjectDataFromObject(&$destinationObject, $sourceObject, array $hiddenVariables = array())
+    public function bindObjectDataFromObject(&$destinationObject, $sourceObject, $readVariablesFromSourceObject = false, array $hiddenVariables = array())
     {
         $accessor = PropertyAccess::createPropertyAccessor();
-        $objectVars = array_merge(get_object_vars($destinationObject), $hiddenVariables);
+        $objectVars = array_merge(get_object_vars($readVariablesFromSourceObject ? $sourceObject : $destinationObject), $hiddenVariables);
         foreach ($objectVars as $objectVarName => $value) {
-            if ($accessor->isReadable($sourceObject, $objectVarName)) {
+            $variableReadable = false;
+            try {
+                $variableReadable = $accessor->isReadable($sourceObject, $objectVarName);
+            } catch (\Exception $e) {
+
+            }
+            if ($variableReadable) {
                 $varValue = $accessor->getValue($sourceObject, $objectVarName);
-                if (is_string($varValue) && strlen($varValue) > 0 && is_numeric($varValue)) {
-                    // PHP will internally convert the string to it is correct type for example float or integer to pass the validator type check
-                    $varValue = $varValue + 0;
-                }
                 if ($varValue instanceof \DateTime) {
                     $varValue = $varValue->format('Y-m-d H:i:s');
                 } elseif (is_object($varValue)) {
                     continue;
                 }
-                $accessor->setValue($destinationObject, $objectVarName, $varValue);
+                if ($accessor->isWritable($destinationObject, $objectVarName)) {
+                    $accessor->setValue($destinationObject, $objectVarName, $varValue);
+                }
             }
         }
     }
@@ -145,7 +153,7 @@ class APIOperations
     }
 
     /**
-     * @param string $message
+     * @param string|null $message
      * @return JsonResponse
      */
     public function getErrorJsonResponse($message = null)
@@ -158,7 +166,7 @@ class APIOperations
     }
 
     /**
-     * @param string $message
+     * @param string|null $message
      * @return JsonResponse
      */
     public function getNotFoundErrorJsonResponse($message = null)
@@ -171,7 +179,6 @@ class APIOperations
     }
 
     /**
-     * @param string $message
      * @return JsonResponse
      */
     public function getInvalidAPIKeyJsonResponse()
@@ -180,11 +187,29 @@ class APIOperations
     }
 
     /**
+     * @param string|null $message
      * @return JsonResponse
      */
-    public function getSuccessJsonResponse()
+    public function getSuccessJsonResponse($message = null)
     {
-        return $this->getJsonResponseForObject(new APIResponse\Success());
+        $successResponse = new APIResponse\Success();
+        if ($message) {
+            $successResponse->message = $message;
+        }
+        return $this->getJsonResponseForObject($successResponse);
+    }
+
+    /**
+     * @param string|null $message
+     * @return JsonResponse
+     */
+    public function getAccessDeniedJsonResponse($message = null)
+    {
+        $accessDeniedResponse = new APIResponse\AccessDenied();
+        if ($message) {
+            $accessDeniedResponse->message = $message;
+        }
+        return $this->getJsonResponseForObject($accessDeniedResponse);
     }
 
     /**
@@ -193,7 +218,7 @@ class APIOperations
      */
     public function getJsonResponseForObject($object)
     {
-        return new JsonResponse($this->getObjectDataAsArray($object));
+        return new JsonResponse($object);
     }
 
     /**
