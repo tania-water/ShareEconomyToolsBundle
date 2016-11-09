@@ -2,14 +2,14 @@
 
 namespace Ibtikar\ShareEconomyToolsBundle\APIResponse;
 
-use Symfony\Component\Validator\Constraints as Assert;
-
 class InvalidAPIKey extends AccessDenied
 {
 
     /**
-     * @Assert\Type(type="string")
+     * @param string $message
      */
-    public $message = 'Invalid api key';
-
+    public function __construct($message = 'Invalid api key')
+    {
+        parent::__construct($message);
+    }
 }
