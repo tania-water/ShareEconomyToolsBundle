@@ -74,7 +74,10 @@ class APIOperations
             $varValue = $request->get($objectVarName, $value);
             if (is_string($varValue) && strlen($varValue) > 0 && is_numeric($varValue)) {
                 // PHP will internally convert the string to it is correct type for example float or integer to pass the validator type check
-                $varValue = $varValue + 0;
+                $temp = $varValue + 0;
+                if (strlen($temp) === strlen($varValue)) {
+                    $varValue = $temp;
+                }
             }
             $accessor->setValue($object, $objectVarName, $varValue);
         }
