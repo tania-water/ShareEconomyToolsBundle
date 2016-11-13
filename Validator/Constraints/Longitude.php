@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints\Regex;
 class Longitude extends Regex
 {
     public $message = 'Not a valid longitude';
-    public $pattern = "/^(\+|-)?(?:180(?:(?:\.0{1,10})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,10})?))$/";
+    public $pattern = "/^(\+|-)?(?:180(?:(?:\.0{1,7})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,7})?))$/";
 
     public function validatedBy()
     {
