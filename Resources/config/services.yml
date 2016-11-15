@@ -29,6 +29,6 @@ services:
 
     app.exception_listener:
         class: Ibtikar\ShareEconomyToolsBundle\Listener\ExceptionListener
-        arguments: ["%kernel.environment%"]
+        arguments: ["%kernel.environment%", "@logger"]
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
