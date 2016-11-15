@@ -4,6 +4,7 @@ namespace Ibtikar\ShareEconomyToolsBundle\Listener;
 
 use Ibtikar\ShareEconomyToolsBundle\APIResponse as ToolsBundleAPIResponses;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -31,11 +32,15 @@ class ExceptionListener
         $request = $event->getRequest();
         if (strpos($request->getRequestUri(), '/api/doc') === false && strpos($request->getRequestUri(), '/api') !== false) {
             if ($this->env !== 'dev') {
+                $exception = $event->getException();
                 $event->setResponse(new JsonResponse(new ToolsBundleAPIResponses\InternalServerError()));
-                if ($event->getException() instanceof NotFoundHttpException) {
+                if ($exception instanceof NotFoundHttpException) {
                     $event->setResponse(new JsonResponse(new ToolsBundleAPIResponses\NotFound()));
+                } elseif ($exception instanceof MethodNotAllowedHttpException) {
+                    $event->setResponse(new JsonResponse(new ToolsBundleAPIResponses\MethodNotAllowed($exception->getMessage())));
                 } else {
-                    $this->logger->critical($event->getException()->getMessage());
+                    $this->logger->critical($exception->getMessage());
+                    $this->logger->critical($exception->getTraceAsString());
                 }
             }
         }
