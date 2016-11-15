@@ -11,11 +11,13 @@ class PagingParameters
 {
     /**
      * @Assert\Type("integer")
+     * @Assert\Range(min=5)
      */
     public $maxResult = 5;
 
     /**
      * @Assert\Type("integer")
+     * @Assert\Range(min=1)
      */
     public $page = 1;
 
