@@ -2,8 +2,6 @@
 
 namespace Ibtikar\ShareEconomyToolsBundle\APIResponse;
 
-use Symfony\Component\Validator\Constraints as Assert;
-
 class Success extends MainResponse
 {
     /**
