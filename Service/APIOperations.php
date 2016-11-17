@@ -122,7 +122,7 @@ class APIOperations
     public function validateObject($object, $groups = null)
     {
         $validationMessages = [];
-        $errors             = $this->validator->validate($object, null, $groups);
+        $errors = $this->validator->validate($object, null, $groups);
 
         if (count($errors) > 0) {
             foreach ($errors as $error) {
@@ -231,5 +231,24 @@ class APIOperations
     public function getObjectDataAsArray($object)
     {
         return json_decode(json_encode($object), true);
+    }
+
+    /**
+     * @author Mahmoud Mostafa <mahmoud.mostafa@ibtikar.net.sa>
+     * @param string $url
+     * @return mixed boolean false if we could not get the url content or the url content
+     */
+    public function getUrlContent($url)
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (X11; Linux x86_64; rv:33.0) Gecko/20100101 Firefox/33.0');
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        $urlContnet = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        return $httpCode === 200 ? $urlContnet : false;
     }
 }
