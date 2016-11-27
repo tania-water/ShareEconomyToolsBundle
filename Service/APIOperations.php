@@ -15,7 +15,7 @@ use Ibtikar\ShareEconomyToolsBundle\APIResponse;
 class APIOperations
 {
 
-    /** @var ValidatorInterface $validator */
+    /* @var $validator \Symfony\Component\Validator\Validator\ValidatorInterface */
     protected $validator;
 
     /**

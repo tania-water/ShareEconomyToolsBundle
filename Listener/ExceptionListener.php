@@ -11,10 +11,10 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class ExceptionListener
 {
 
-    /** @var $env string */
+    /* @var $env string */
     private $env;
 
-    /** @var $logger \Monolog\Logger */
+    /* @var $logger \Monolog\Logger */
     private $logger;
 
     /**

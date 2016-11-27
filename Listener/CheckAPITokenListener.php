@@ -11,10 +11,10 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 class CheckAPITokenListener
 {
 
-    /** @var $apiKeys array */
+    /* @var $apiKeys array */
     private $apiKeys = array();
 
-    /** @var APIOperations $apiOperations */
+    /* @var $apiOperations \Ibtikar\ShareEconomyToolsBundle\Service\APIOperations */
     private $apiOperations;
 
     /**

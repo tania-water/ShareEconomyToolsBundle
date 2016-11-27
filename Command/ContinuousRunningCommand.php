@@ -15,7 +15,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 abstract class ContinuousRunningCommand extends ContainerAwareCommand implements SingleRunCommandInterface
 {
 
-    /** @var $defaultSleepTime string */
+    /* @var $defaultSleepTime string */
     public static $defaultSleepTime = 500000;
 
     /**
