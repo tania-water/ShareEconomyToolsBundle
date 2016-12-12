@@ -2,7 +2,7 @@ services:
 
     api_operations:
         class: Ibtikar\ShareEconomyToolsBundle\Service\APIOperations
-        arguments: [ '@validator' ]
+        arguments: [ '@validator', '@translator' ]
 
     request.listener.check_api_token:
         class: Ibtikar\ShareEconomyToolsBundle\Listener\CheckAPITokenListener

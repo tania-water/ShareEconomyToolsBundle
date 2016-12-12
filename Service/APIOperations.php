@@ -18,12 +18,16 @@ class APIOperations
     /* @var $validator \Symfony\Component\Validator\Validator\ValidatorInterface */
     protected $validator;
 
+    /* @var $translator \Symfony\Component\Translation\TranslatorInterface */
+    protected $translator;
+
     /**
      * @param ValidatorInterface $validator
      */
-    public function __construct(ValidatorInterface $validator = null)
+    public function __construct(ValidatorInterface $validator = null, $translator)
     {
         $this->validator = $validator;
+        $this->translator = $translator;
     }
 
     /**
@@ -164,6 +168,8 @@ class APIOperations
         $errorResponse = new APIResponse\InternalServerError();
         if ($message) {
             $errorResponse->message = $message;
+        } else {
+            $errorResponse->message = $this->translator->trans('Something is not right, Please contact the development team.');
         }
         return $this->getJsonResponseForObject($errorResponse);
     }
@@ -177,6 +183,8 @@ class APIOperations
         $errorResponse = new APIResponse\NotFound();
         if ($message) {
             $errorResponse->message = $message;
+        } else {
+            $errorResponse->message = $this->translator->trans('Not found.');
         }
         return $this->getJsonResponseForObject($errorResponse);
     }
@@ -198,6 +206,8 @@ class APIOperations
         $successResponse = new APIResponse\Success();
         if ($message) {
             $successResponse->message = $message;
+        } else {
+            $successResponse->message = $this->translator->trans('Success.');
         }
         return $this->getJsonResponseForObject($successResponse);
     }
@@ -211,6 +221,8 @@ class APIOperations
         $accessDeniedResponse = new APIResponse\AccessDenied();
         if ($message) {
             $accessDeniedResponse->message = $message;
+        } else {
+            $accessDeniedResponse->message = $this->translator->trans('Access denied.');
         }
         return $this->getJsonResponseForObject($accessDeniedResponse);
     }
