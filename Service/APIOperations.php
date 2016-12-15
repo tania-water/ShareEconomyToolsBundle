@@ -76,11 +76,16 @@ class APIOperations
         $objectVars = get_object_vars($object);
         foreach ($objectVars as $objectVarName => $value) {
             $varValue = $request->get($objectVarName, $value);
-            if (is_string($varValue) && strlen($varValue) > 0 && is_numeric($varValue)) {
-                // PHP will internally convert the string to it is correct type for example float or integer to pass the validator type check
-                $temp = $varValue + 0;
-                if (strlen($temp) === strlen($varValue)) {
-                    $varValue = $temp;
+            if (is_string($varValue)) {
+                if (false !== stripos($objectVarName, 'password')) {
+                    $varValue = trim($varValue);
+                    if (strlen($varValue) > 0 && is_numeric($varValue)) {
+                        // PHP will internally convert the string to it is correct type for example float or integer to pass the validator type check
+                        $temp = $varValue + 0;
+                        if (strlen($temp) === strlen($varValue)) {
+                            $varValue = $temp;
+                        }
+                    }
                 }
             }
             $accessor->setValue($object, $objectVarName, $varValue);
