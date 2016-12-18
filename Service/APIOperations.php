@@ -77,7 +77,7 @@ class APIOperations
         foreach ($objectVars as $objectVarName => $value) {
             $varValue = $request->get($objectVarName, $value);
             if (is_string($varValue)) {
-                if (false !== stripos($objectVarName, 'password')) {
+                if (false === stripos($objectVarName, 'password')) {
                     $varValue = trim($varValue);
                     if (strlen($varValue) > 0 && is_numeric($varValue)) {
                         // PHP will internally convert the string to it is correct type for example float or integer to pass the validator type check
