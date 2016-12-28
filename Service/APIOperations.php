@@ -79,11 +79,19 @@ class APIOperations
             if (is_string($varValue)) {
                 if (false === stripos($objectVarName, 'password')) {
                     $varValue = trim($varValue);
-                    if (strlen($varValue) > 0 && is_numeric($varValue)) {
-                        // PHP will internally convert the string to it is correct type for example float or integer to pass the validator type check
-                        $temp = $varValue + 0;
-                        if (strlen($temp) === strlen($varValue)) {
-                            $varValue = $temp;
+                    if (strlen($varValue) > 0) {
+                        if (false !== stripos($objectVarName, 'date')) {
+                            try {
+                                $dateTimeObject = new \DateTime($varValue);
+                                $varValue = $dateTimeObject;
+                            } catch (\Exception $ex) {
+                            }
+                        } elseif (is_numeric($varValue)) {
+                            // PHP will internally convert the string to it is correct type for example float or integer to pass the validator type check
+                            $temp = $varValue + 0;
+                            if (strlen($temp) === strlen($varValue)) {
+                                $varValue = $temp;
+                            }
                         }
                     }
                 }
