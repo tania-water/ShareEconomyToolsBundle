@@ -14,8 +14,8 @@ use Ibtikar\ShareEconomyToolsBundle\APIResponse;
  */
 class APIOperations
 {
-
     /* @var $validator \Symfony\Component\Validator\Validator\ValidatorInterface */
+
     protected $validator;
 
     /* @var $translator \Symfony\Component\Translation\TranslatorInterface */
@@ -80,7 +80,7 @@ class APIOperations
                 if (false === stripos($objectVarName, 'password')) {
                     $varValue = trim($varValue);
                     if (strlen($varValue) > 0) {
-                        if (false !== stripos($objectVarName, 'date')) {
+                        if (false !== stripos($objectVarName, 'date') && !is_numeric($varValue)) {
                             try {
                                 $dateTimeObject = new \DateTime($varValue);
                                 $varValue = $dateTimeObject;
