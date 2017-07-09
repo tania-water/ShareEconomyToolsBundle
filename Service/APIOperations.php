@@ -70,7 +70,7 @@ class APIOperations
      * @param object &$object
      * @param Request $request
      */
-    public function bindObjectDataFromRequst(&$object, Request $request)
+    public function bindObjectDataFromRequest(&$object, Request $request)
     {
         $accessor = PropertyAccess::createPropertyAccessor();
         $objectVars = get_object_vars($object);
@@ -107,9 +107,9 @@ class APIOperations
      * @param array $validationGroups
      * @return JsonResponse|null errors response or null if no errors found
      */
-    public function bindAndValidateObjectDataFromRequst(&$object, Request $request, array $validationGroups = array('Default'))
+    public function bindAndValidateObjectDataFromRequest(&$object, Request $request, array $validationGroups = array('Default'))
     {
-        $this->bindObjectDataFromRequst($object, $request);
+        $this->bindObjectDataFromRequest($object, $request);
         $errorsObjects = $this->validator->validate($object, null, $validationGroups);
         if (count($errorsObjects) > 0) {
             return $this->getValidationErrorsJsonResponse($errorsObjects);
