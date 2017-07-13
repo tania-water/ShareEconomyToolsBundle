@@ -47,7 +47,7 @@ abstract class ContinuousRunningCommand extends ContainerAwareCommand implements
             }
         }
         if ($output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-            $output->writeln($this->commandLogPrefix . 'Started with proccess id ' . getmypid() . '.');
+            $output->writeln('Started with proccess id ' . getmypid() . '.');
         }
         if (!gc_enabled()) {
             $output->writeln('<comment>Garbage collector is disabled trying to enable.</comment>');
