@@ -117,6 +117,70 @@ class APIOperations
     }
 
     /**
+     * Mahmoud Mostafa <mahmoud.mostafa@ibtikar.net.sa>
+     * @param object &$object
+     * @param array $parameters
+     * @param array $objectsIndexes
+     */
+    public function bindObjectDataFromArray(&$object, array $parameters, array $objectsIndexes = array())
+    {
+        $accessor = PropertyAccess::createPropertyAccessor();
+        $objectVars = get_object_vars($object);
+        foreach ($objectVars as $objectVarName => $value) {
+            $varValue = isset($parameters[$objectVarName]) ? $parameters[$objectVarName] : $value;
+            if (is_scalar($varValue)) {
+                if (false !== stripos($objectVarName, 'date') || false !== stripos($objectVarName, 'time')) {
+                    try {
+                        $dateTimeObject = new \DateTime('@' . $varValue);
+                        $varValue = $dateTimeObject;
+                    } catch (\Exception $ex) {
+
+                    }
+                } else if (is_string($varValue)) {
+                    if (false === stripos($objectVarName, 'password')) {
+                        $varValue = trim($varValue);
+                    }
+                }
+            } elseif (isset($objectsIndexes[$objectVarName]) && is_array($varValue)) {
+                if (count($varValue) === count($varValue, COUNT_RECURSIVE)) {
+                    $subObject = new $objectsIndexes[$objectVarName];
+                    $this->bindObjectDataFromArray($subObject, $varValue, $objectsIndexes);
+                    $varValue = $subObject;
+                } else {
+                    $objectsArray = array();
+                    foreach ($varValue as $arrayValue) {
+                        $subObject = new $objectsIndexes[$objectVarName];
+                        $this->bindObjectDataFromArray($subObject, $arrayValue, $objectsIndexes);
+                        $objectsArray [] = $subObject;
+                    }
+                    $varValue = $objectsArray;
+                }
+            }
+            $accessor->setValue($object, $objectVarName, $varValue);
+        }
+    }
+
+    /**
+     * Mahmoud Mostafa <mahmoud.mostafa@ibtikar.net.sa>
+     * set the object public variables from the json request
+     * @param object &$object
+     * @param Request $request
+     * @param array $objectsIndexes
+     */
+    public function bindObjectDataFromJsonRequest(&$object, Request $request, array $objectsIndexes = array())
+    {
+        $content = trim($request->getContent());
+        if (!empty($content)) {
+            $parameters = @json_decode($content, true);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                return false;
+            }
+            $this->bindObjectDataFromArray($object, $parameters, $objectsIndexes);
+        }
+        return true;
+    }
+
+    /**
      * @param ConstraintViolationList $errorsObjects
      * @return JsonResponse
      */
