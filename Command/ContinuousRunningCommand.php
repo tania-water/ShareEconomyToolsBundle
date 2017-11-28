@@ -32,8 +32,7 @@ abstract class ContinuousRunningCommand extends ContainerAwareCommand implements
     }
 
     /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
+     * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -58,7 +57,7 @@ abstract class ContinuousRunningCommand extends ContainerAwareCommand implements
         while (true) {
             // sleep for .5 second
             usleep($sleepTime);
-            $this->commandLogic();
+            $this->commandLogic($input, $output);
             // free the memory from all previous objects
             $this->em->clear();
             gc_collect_cycles();
@@ -66,7 +65,8 @@ abstract class ContinuousRunningCommand extends ContainerAwareCommand implements
     }
 
     /**
-     * {@inheritdoc}
+     * @param InputInterface $input
+     * @param OutputInterface $output
      */
-    abstract protected function commandLogic();
+    abstract protected function commandLogic(InputInterface $input, OutputInterface $output);
 }
