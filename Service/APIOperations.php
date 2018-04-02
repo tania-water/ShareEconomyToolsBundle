@@ -132,6 +132,7 @@ class APIOperations
                 if (false !== stripos($objectVarName, 'date') || false !== stripos($objectVarName, 'time')) {
                     try {
                         $dateTimeObject = new \DateTime('@' . $varValue);
+                        $dateTimeObject->setTimezone(new \DateTimeZone(date_default_timezone_get()));
                         $varValue = $dateTimeObject;
                     } catch (\Exception $ex) {
 
