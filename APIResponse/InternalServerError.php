@@ -20,7 +20,8 @@ class InternalServerError extends MainResponse
     /**
      * @param string $message
      */
-    public function __construct($message = 'Something is not right, Please contact the development team.')
+   //public function __construct($message = 'Something is not right, Please contact the development team.')
+    public function __construct($message = 'Something is not right, Please check it and try again.')
     {
         $this->message = $message;
     }
